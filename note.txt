@@ -1,0 +1,24 @@
+Cột giới tính: nam = 1, nữ = 2
+Bằng cấp: cử nhân = 1, thạc sĩ = 2
+train: train trên tập train.csv
+test: test trên tập test.csv
+
+tìm hiểu: dataframe, series trong pandas
+
+yêu cầu 1a: huấn luyện 1 lần duy nhất.
+gọi X là vector chứa 11 đặc trưng
+
+hàm get.params
+
+1.b 
+kết quả = mức độ hài lòng là có MAE min
+
+báo cáo trung bình cộng của 5 lần chạy
+
+
+
+
+1d.
+Trực quan hoá mô hình:
+lấy 1 đặc trưng để so với salary để so với sự tương quan
+

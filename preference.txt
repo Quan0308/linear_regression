@@ -1,0 +1,2 @@
+train and test dataset: https://www.javatpoint.com/train-and-test-datasets-in-machine-learning (9/8/2023)
+personality factor: https://kse.ua/kse-research/relationship-between-your-personality-and-your-salary-level/ (11/8/2023)
