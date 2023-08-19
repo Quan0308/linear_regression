@@ -1,4 +1,12 @@
 train and test dataset: https://neptune.ai/blog/cross-validation-in-machine-learning-how-to-do-it-right (9/8/2023)
+
 personality factor: https://kse.ua/kse-research/relationship-between-your-personality-and-your-salary-level/ (11/8/2023)
+
 why we should remove features that have high correlation: https://datascience.stackexchange.com/questions/24452/in-supervised-learning-why-is-it-bad-to-have-correlated-features(17/8/2023)
 explain mathimatically about removing high correlation: https://www.quora.com/Why-is-it-important-to-remove-correlated-variables-when-performing-machine-learning-If-2-variables-are-correlated-how-do-you-choose-which-one-to-exclude-from-the-data-set (17/8/2023)
+
+why should drop constant feature: https://sease.io/2021/06/drop-constant-features-a-real-world-ltr-scenario.html#:~:text=Those%20features%20which%20contain%20constant,example%20during%20the%20encoding%20phase. (19/8/2023)
+low variance feature: https://stats.stackexchange.com/questions/488989/in-feature-selection-what-is-the-reason-for-considering-removing-low-variance-f
+
+
+mutual information: https://machinelearningmastery.com/information-gain-and-mutual-information/
