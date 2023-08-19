@@ -1,0 +1,218 @@
+\documentclass{report}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\usepackage[utf8]{vietnam}
+\usepackage{hyperref} % Hyperlink
+\usepackage{parskip}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usetikzlibrary{calc}
+\usepackage{titlesec} % Change section font
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{multicol}
+\usepackage{setspace}
+\usepackage{pdfpages}
+\usepackage{lscape}
+\usepackage{subfigure}
+\usepackage{tabularray}
+\usepackage{amsmath}
+
+% ========== [LANGUAGE] ==========
+\def\lang{1} % 0 == English, 1 == Vietnamese
+
+\ifnum\lang = 0
+    \usepackage[english]{babel}
+\fi
+% ========== END OF [LANGUAGE] ==========
+
+
+
+
+
+\begin{document}
+
+% ========== [TITLE PAGE] ==========
+\begin{titlepage}
+
+\begin{tikzpicture}[overlay,remember picture]
+\draw[line width=4pt]
+    ($ (current page.north west) + (1cm,-1cm) $)
+    rectangle
+    ($ (current page.south east) + (-1cm,1cm) $);
+\draw[line width=1.5pt]
+    ($ (current page.north west) + (1.2cm,-1.2cm) $)
+    rectangle
+    ($ (current page.south east) + (-1.2cm,1.2cm) $);
+\end{tikzpicture}
+
+
+\begin{center}
+% Upper part of the page
+\ifnum\lang = 0
+    \textbf{\Large UNIVERSITY OF SCIENCE}\\[0.2cm]
+    \textbf{\Large FACULTY OF INFORMATION TECHNOLOGY}\\
+\else
+    \textbf{\Large TRƯỜNG ĐẠI HỌC KHOA HỌC TỰ NHIÊN}\\
+    \textbf{\Large KHOA CÔNG NGHỆ THÔNG TIN}\\
+\fi
+
+% University Logo
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=8cm, height=8cm]{assets/KHTN.png}
+\end{figure}
+
+% Title
+\rule{\textwidth}{1pt} \\[0.4cm]
+{\huge \bfseries BÁO CÁO ĐỒ ÁN - LINEAR REGRESSION}\\[0.4cm]
+\textsc{\Large TOÁN ỨNG DỤNG VÀ THỐNG KÊ}
+\rule{\textwidth}{1pt} \\[2cm]
+
+% Student name
+\begin{center}
+    \textbf{\Large HỌ VÀ TÊN: BÙI ĐỖ DUY QUÂN}\\[0.5cm]
+    \textbf{\Large MÃ SỐ SINH VIÊN: 21127141}\\[0.5cm]
+    \textbf{\Large LỚP: 21CLC02}\\[2cm]
+\end{center}
+
+% Advisor name
+\begin{center}
+    \ifnum\lang = 0
+        \textbf{\Large Lecturers: \\[0.2cm]}
+    \else
+        \textbf{\Large Giảng viên hướng dẫn: \\[0.2cm]}
+    \fi
+    \Large{Phan Thị Phương Uyên}
+\end{center}
+\vfill
+
+% Bottom of the page
+\ifnum\lang = 0
+    \selectlanguage{english} 
+\fi
+{\large \today}
+\end{center}
+\end{titlepage}
+% ========== END [TITLE PAGE] ==========
+
+
+
+
+
+% ========== [HEADER AND FOOTER] ==========
+\pagestyle{fancy}
+\setlength{\headheight}{0.5cm}
+\fancyhf{}
+\lhead{\textbf{Đồ án 02}}
+\rhead{\textbf{Toán ứng dụng và thống kê}}
+\ifnum\lang = 0
+    \rfoot{Page \thepage}
+\else
+    \rfoot{Trang \thepage}
+\fi
+% ========== END [HEADER AND FOOTER] ==========
+
+
+
+
+
+% ========== [TABLE OF CONTENTS] ==========
+\Large
+\tableofcontents
+\thispagestyle{fancy} % Fix footer and header
+\vfill
+\pagebreak
+% ========== END [TABLE OF CONTENTS] ==========
+
+
+
+
+
+% ========== [SECTION NUMBERING] ==========
+\setcounter{secnumdepth}{10} % Section numbering depth 
+
+\renewcommand\thesection{\arabic{section}} % Section start from 1,2,3...
+\renewcommand\thesubsection{\thesection.\arabic{subsection}} % Subsection start from 1,2,3,...
+\renewcommand\thesubsubsection{\alph{subsubsection}} 
+
+\titleformat*{\section}{\Large\bfseries}
+\titleformat*{\subsection}{\Large\bfseries}
+\titleformat*{\subsubsection}{\Large\bfseries}
+% ========== END [SECTION NUMBERING] ==========
+
+
+
+
+
+% ========== [MAIN CONTENT] ==========
+\section{YÊU CẦU CỦA ĐỒ ÁN}
+\begin{itemize}
+    \item Xây dựng mô hình dự đoán \textbf{mức lương} của kỹ sư sử dụng \textbf{mô hình hồì quy tuyến tính (linear regression)} với các yêu cầu sau:
+    \begin{enumerate}
+        \item Sử dụng 11 đặc trưng gồm: \textbf{Gender, 10percentage, 12percentage, CollegeTier, Degree, collegeGPA, CollegeCityTier, English, Logical, Quant, Domain}
+    
+        \item Sử dụng 5 đặc trưng tính cách: \textbf{conscientiousness, agreeableness, extraversion, nueroticism, openess\_to\_experience} và sử dụng phương pháp \textbf{k-fold cross validation} tìm ra đặc trưng tốt nhất trong các đặc trưng tính cách.
+        
+         \item Sử dụng 3 đặc trưng: \textbf{English, Logical, Quant} và sử dụng phương pháp \textbf{k-fold cross validation} tìm ra đặc trưng tốt nhất.
+ 
+        \item Sinh viên tự xây dựng các mô hình (tối thiểu 3) và tìm mô hình cho kết quả tốt nhất qua phương pháp \textbf{k-fold cross validation}.
+    \end{enumerate}
+
+    \item Các thư viện được cho trước: \textbf{Numpy}, \textbf{pandas}.
+\end{itemize}
+
+
+\section{BỘ DỮ LIỆU}
+\begin{itemize}
+    \item  Bộ dữ liệu \textbf{\href{https://www.kaggle.com/datasets/manishkc06/engineering-graduate-salary-prediction}{Engineering Graduate Salary}} gồm 2998 dòng và 34 cột. Sau quá trình tiền xử lý là loại bỏ các cột có \textbf{giá trị chuỗi} và \textbf{giá trị liên quan đến định danh và năm} thì còn lại 2998 dòng và 24 cột như sau:
+    \begin{itemize}
+        \item Giá trị mục tiêu (y): \textbf{Salary}
+        \item 23 đặc trưng giải thích (X) gồm: Gender, 10percentage, 12percentage, CollegeTier, Degree, collegeGPA, CollegeCityTier, English, Logical, Quant, Domain, ComputerProgramming, ElectronicsAndSemicon, ComputerScience, MechanicalEngg, ElectricalEngg, TelecomEngg, CivilEngg, conscientiousness, agreeableness, extraversion, nueroticism, openess\_to\_experience.
+    \end{itemize}
+    \item Sinh viên đã được cung cấp 2 bộ dữ liệu: \textbf{train.csv} và \textbf{test.csv}. Bộ dữ liệu \textbf{train.csv} gồm 2248 mẫu để huấn luyện mô hình , và bộ dữ liệu \textbf{test.csv} gồm 750 mẫu để kiểm tra mô hình.
+\end{itemize}
+
+\section{CÁC THƯ VIỆN SỬ DỤNG THÊM}
+Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} và \textbf{pandas}, sinh viên còn sử dụng thêm thư viện \textbf{sklearn} và sử dụng module \textbf{feature\_selection} của thư viện này. Trong module này sẽ sử dụng 3 lớp:
+\begin{itemize}
+    \item \textbf{VarianceThreshold}: Loại bỏ các đặc trưng có \textbf{phương sai} nhỏ hơn ngưỡng được đặt trước.
+    \item \textbf{mutual\_info\_regression}: Tính độ tương quan giữa các đặc trưng và giá trị mục tiêu.
+    \item \textbf{SelectPercentile}: Chọn ra nhóm các đặc trưng có độ tương quan cao nhất với giá trị mục tiêu.
+\end{itemize}
+
+\section{KIẾN THỨC NGHIÊN CỨU}
+\subsection{Mô hình hồi quy tuyến tính}
+\section{TÀI LIỆU THAM KHẢO}
+\begin{itemize}
+    \item Cô Phan Thị Phương Uyên.
+    \item 
+    \href{https://ie.nitk.ac.in/blog/2020/01/19/algorithms-for-adjusting-brightness-and-contrast-of-an-image/}{Công thức thay đổi độ sáng và độ tương phản}.
+
+    \item
+    \href{https://www.dfstudios.co.uk/articles/programming/image-programming-algorithms/image-processing-algorithms-part-5-contrast-adjustment/}{Thay đổi độ tương phản}.
+
+    \item 
+    \href{https://www.baeldung.com/cs/convert-rgb-to-grayscale}{Công thức chuyển thành hình xám}.
+
+    \item 
+    \href{https://dyclassroom.com/image-processing-project/how-to-convert-a-color-image-into-sepia-image}{Công thức chuyển thànhh hình màu sepia}.
+
+    \item \href{https://en.wikipedia.org/wiki/Kernel_(image_processing)}{Công thức và ma trận các kernel để làm mờ và rõ nét ảnh}.
+
+    \item 
+    \href{https://www.youtube.com/watch?v=4Eh0y3LHTNU&t=658s}{Triển khai thuật toán cho làm mờ ảnh}.
+    \item \href{https://www.maa.org/external_archive/joma/Volume8/Kalman/General.html}{Phương trình ellip}.
+
+    \item \href{https://math.stackexchange.com/questions/2003517/how-to-calculate-width-and-height-of-a-45-rotated-ellipse-bounded-by-a-square}{Công thức của ellip khi xoay 45 độ}.
+
+    \item \href{https://numpy.org/doc/stable/user/index.html#user}{Tài liệu các hàm trong thư viện numpy}.
+
+    \item \href{https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.imshow.html}{Thư viện matplotlib hỗ trợ xuất ảnh và lưu ảnh}.
+
+    \item \href{https://pillow.readthedocs.io/en/stable/reference/Image.html}{Thư viện Pillow hỗ trợ đọc ảnh}.
+    
+\end{itemize}
+% ========== END [MAIN CONTENT] ==========
+\end{document}
