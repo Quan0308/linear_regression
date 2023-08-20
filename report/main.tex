@@ -105,7 +105,7 @@
 \pagestyle{fancy}
 \setlength{\headheight}{0.5cm}
 \fancyhf{}
-\lhead{\textbf{Đồ án 02}}
+\lhead{\textbf{Đồ án 03}}
 \rhead{\textbf{Toán ứng dụng và thống kê}}
 \ifnum\lang = 0
     \rfoot{Page \thepage}
@@ -148,14 +148,14 @@
 
 % ========== [MAIN CONTENT] ==========
 \section{YÊU CẦU CỦA ĐỒ ÁN}
-\begin{itemize}
+\begin{itemize} \label{sec:requirement}
     \item Xây dựng mô hình dự đoán \textbf{mức lương} của kỹ sư sử dụng \textbf{mô hình hồì quy tuyến tính (linear regression)} với các yêu cầu sau:
     \begin{enumerate}
         \item Sử dụng 11 đặc trưng gồm: \textbf{Gender, 10percentage, 12percentage, CollegeTier, Degree, collegeGPA, CollegeCityTier, English, Logical, Quant, Domain}
     
         \item Sử dụng 5 đặc trưng tính cách: \textbf{conscientiousness, agreeableness, extraversion, nueroticism, openess\_to\_experience} và sử dụng phương pháp \textbf{k-fold cross validation} tìm ra đặc trưng tốt nhất trong các đặc trưng tính cách.
         
-         \item Sử dụng 3 đặc trưng: \textbf{English, Logical, Quant} và sử dụng phương pháp \textbf{k-fold cross validation} tìm ra đặc trưng tốt nhất.
+        \item Sử dụng 3 đặc trưng kĩ năng: \textbf{English, Logical, Quant} và sử dụng phương pháp \textbf{k-fold cross validation} tìm ra đặc trưng tốt nhất.
  
         \item Sinh viên tự xây dựng các mô hình (tối thiểu 3) và tìm mô hình cho kết quả tốt nhất qua phương pháp \textbf{k-fold cross validation}.
     \end{enumerate}
@@ -182,8 +182,183 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
     \item \textbf{SelectPercentile}: Chọn ra nhóm các đặc trưng có độ tương quan cao nhất với giá trị mục tiêu.
 \end{itemize}
 
-\section{KIẾN THỨC NGHIÊN CỨU}
-\subsection{Mô hình hồi quy tuyến tính}
+\section{KIẾN THỨC TÌM HIỂU}
+\subsection{Hồi quy tuyến tính}
+    \begin{itemize}
+        \item \textbf{Hồi quy tuyến tính {(linear regression)}} là phương pháp phân tích quan hệ giữa biến phụ thuộc Y với một hay nhiều biến độc lập X. Phương pháp này sử dụng \textbf{hàm tuyến tính (bậc 1)}, và các tham số của mô hình được ước lượng từ dữ liệu. Việc xây dựng \textbf{mô hình hồi quy tuyến tính} có thể giúp dự đoán một cách chính xác nhất. Mô hình hồi quy tuyến tính cho mẫu dữ liệu như sau:
+        \begin{equation}
+            y = \theta_0 + \theta_1x
+        \end{equation} 
+        \begin{figure}[H]
+            \includegraphics[width=\textwidth, height=0.4\textheight, keepaspectratio]{assets/linear_ex.png}
+            \centering
+        \end{figure}
+
+        \item Như vậy đối với những dữ liệu có nhiều thuộc tính thì có thể mở rộng mô hình hồi quy tuyến tính như sau:
+        \begin{equation}
+            y = \theta_0 + \theta_1x_1 + \theta_2x_2 + ... + \theta_nx_n
+        \end{equation}
+    \end{itemize}
+
+\subsection{Huấn luyện và kiểm tra mô hình}
+    \begin{itemize}
+        \item Để có thể tìm được mô hình phù hợp nhất cho bộ dữ liệu, bộ dữ liệu phải được chia thành 2 phần là \textbf{tập huấn luyện} và \textbf{tập kiểm tra}. Điều này sẽ giúp mô hình tránh được trường hợp \textbf{underfitting} và \textbf{overfitting}. Hai trường hợp này lần lượt là những mô hình quá tệ về độ chính xác của dữ liệu dự đoán hay mô hình quá phức tạp, cho kết quả rất tốt trên dữ liệu được cho nhưng lại quá kém so với dữ liệu khác ở thực tế. Tập huấn luyện \textbf{trainning set} sẽ được sử dụng để huấn luyện mô hình, còn tập kiểm tra \textbf{testing set} sẽ được sử dụng để kiểm tra mô hình đã được huấn luyện có tốt hay không. Tập kiểm tra sẽ được sử dụng để đánh giá mô hình.
+    
+        \item Trong thực tế đã nhiều phương pháp được dùng để  tạo ra tập \textbf{huấn luyện và kiểm tra}, trong đồ án này sẽ đề cập tới phương pháp \textbf{K-fold Cross Validation}.
+        
+        \subsubsection*{K-fold Cross Validation}\label{sec:k-fold-cross-validation}
+            \begin{itemize}
+                \item Theo như thông thường, chúng ta sẽ nghĩ tới việc chọn bao nhiêu phần để cho làm phần tập \textbf{huấn luyện}, và tập còn lại sẽ là tập \textbf{kiểm tra}. Tuy nhiên chúng ta sẽ không biết được 2 phần này nên chứa bao nhiêu dữ liệu trong từng trường hợp và nếu chia sai thì độ chính xác của mô hình sẽ chắc chắn không tốt. Chính vì vậy ý tưởng của phương pháp này chính là sẽ chia đều bộ dữ liệu này thành từng phần \textbf{fold} và sẽ thực hiện huấn luyện và kiểm tra từng phần để  tìm ra mô hình tốt nhất.
+                \item Chi tiết các bước làm của phương pháp như sau: 
+                    \begin{enumerate}
+                        \item Chia bộ dữ liệu thành \textbf{k} phần bằng nhau.
+                        \item Tại thời điểm xét từng phần dữ liệu, phần dữ liệu đó sẽ được chọn làm tập \textbf{kiểm tra}, và \textbf{k-1} còn lại sẽ được chọn làm tập \textbf{huấn luyện}.
+                        \item Lưu lại độ chính xác của mô hình tại thời điểm đó.
+                        \item Lặp lại các bước trên cho đến khi tất cả các phần dữ liệu đều được chọn làm tập \textbf{kiểm tra}.
+                        \item Tính trung bình độ chính xác của các lần huấn luyện và kiểm tra và đây chính là độ chính xác của mô hình.
+                    \end{enumerate}
+                
+                \begin{figure}[H]
+                    \includegraphics[width=\textwidth, keepaspectratio]{assets/grid_search_cross_validation.png}
+                    \centering
+                    \caption{Minh họa phương pháp K-fold Cross Validation}
+                \end{figure}
+                
+            \end{itemize}
+    \end{itemize}
+
+\section{MÔ TẢ CÁC HÀM SỬ DỤNG}
+\subsection{Lớp OLSLinearRegression}\label{sec:olslinearregression}
+    Đây là lớp được cô \textbf{Phan Thị Phương Uyên} cung cấp, lớp này sẽ giúp sinh viên có thể xây dựng được mô hình hồi quy tuyến tính. Các thuộc tính của lớp này gồm:
+    \begin{itemize}
+        \item \textbf{fit(self, X, y)}: phương thức này sẽ thực hiện huấn luyện mô hình hồi quy tuyến tính với dữ liệu đầu vào là \textbf{X (dữ liệu đặc trưng)} và \textbf{y (dữ liệu mục tiêu)}. Hàm sẽ thực hiện và trả về trọng số của mô hình tương ứng với các đặc trưng theo công thức:
+        \begin{equation}
+            \theta = (X^TX)^{-1}X^Ty
+        \end{equation}
+
+        \item \textbf{get\_params()}: phương thức \textit{getter} sẽ trả về các trọng số của mô hình.
+        
+        \item \textbf{predict(self, X)}: phương thức này sẽ thực hiện dự đoán giá trị mục tiêu dựa trên dữ liệu đầu vào là \textbf{X (dữ liệu đặc trưng)} và trọng số của mô hình. Hàm sẽ thực hiện và trả về giá trị dự đoán theo công thức:
+        \begin{equation}
+            y = \theta_1x_1 + \theta_2x_2 + ... + \theta_nx_n
+        \end{equation}
+    \end{itemize}
+
+\subsection{Hàm mae(y\_pred, y\_test)}\label{sec:mae}
+    Đây là hàm được cô \textbf{Phan Thị Phương Uyên} cung cấp, tham số truyền vào sẽ là \textbf{giá trị/tập giá trị dự đoán và giá trị/tập giá trị kiểm tra}. Hàm sẽ \textbf{trả về giá trị thể hiện độ chính xác} của giá trị được dự đoán, giá trị càng thấp thì độ chính xác càng cao. Công thức để tính độ chính xác là:
+    \begin{equation}
+        MAE = \frac{1}{n}\sum_{i=1}^{n}|y_{pred} - y_{test}|
+    \end{equation}
+
+\subsection{Hàm getTrain(index, folks)}\label{sec:getTrain}
+    Đây là hàm hỗ trợ cho việc xác định tập dữ liệu \textbf{huấn luyện} trong phương pháp \hyperref[sec:k-fold-cross-validation]{\underline{K-fold Cross Validation}}. Giá trị đầu vào sẽ là \textbf{index} của phần dữ liệu đang xét và \textbf{folks} là tập dữ liệu đã được chia. Hàm sẽ \textbf{trả về tập dữ liệu huấn luyện}.
+
+\subsection{Hàm Best\_Feature\_Personality(Df\_np, k\_cluster)}
+    Đây là hàm giúp tìm ra đặc trưng tính cách tốt nhất trong 5 tính cách ở yêu cầu \textbf{2} trong phần \hyperref[sec:requirement]{\underline{YÊU CẦU ĐỒ ÁN}}. Giá trị đầu vào sẽ là \textbf{Df\_np} là tập dữ liệu đã được chuyển thành dạng \textbf{numpy array} và \textbf{k\_cluster} là số lượng cụm cần phải chia. Hàm sẽ thực hiện huấn luyện từng đặc trưng tính cách trên từng phần và sau cùng \textbf{trả về số thứ tự của đặc trưng tính cách tốt nhất}.Việc chọn ra đặc trưng tốt nhất sẽ được thực hiện dựa trên so sánh \textbf{MAE trung bình} của từng đặc trưng sau khi huấn luyện trên từng \textbf{k\_cluster} phần dữ liệu.
+
+\subsection{Hàm best\_personality\_feature\_model()}\label{sec:bestpersonalityfeaturemodel}
+    Đây là hàm sẽ thực hiện huấn luyện mô hình theo đặc trưng tốt nhất mà được tìm thấy ở hàm \textbf{Best\_Feature\_Personality}. Tham số truyền vào sẽ không có, nhưng giá trị trả về của hàm lần lượt 2 giá trị/tập giá trị \textbf{dự đoán} và \textbf{kiểm tra}.
+
+\subsection{Hàm Best\_Feature\_Skill(Df\_np, k\_cluster)}\label{sec:BestFeaturePersonality}
+    Đây là hàm giúp tìm ra đặc trưng kĩ năng tốt nhất trong 3 kĩ năng ở yêu cầu \textbf{3} trong phần \hyperref[sec:requirement]{\underline{YÊU CẦU ĐỒ ÁN}}. Giá trị đầu vào sẽ là \textbf{Df\_np} là tập dữ liệu đã được chuyển thành dạng \textbf{numpy array} và \textbf{k\_cluster} là số lượng cụm cần phải chia. Hàm sẽ thực hiện huấn luyện từng đặc trưng kĩ năng trên từng phần và sau cùng \textbf{trả về số thứ tự của đặc trưng kĩ nang9 tốt nhất}.Việc chọn ra đặc trưng tốt nhất sẽ được thực hiện dựa trên so sánh \textbf{MAE trung bình} của từng đặc trưng sau khi huấn luyện trên từng \textbf{k\_cluster} phần dữ liệu.
+
+\subsection{Hàm best\_skill\_feature\_model()}
+    Đây là hàm sẽ thực hiện huấn luyện mô hình theo đặc trưng tốt nhất mà được tìm thấy ở hàm \textbf{Best\_Feature\_Skill}. Tham số truyền vào sẽ không có, nhưng giá trị trả về của hàm lần lượt 2 giá trị/tập giá trị \textbf{dự đoán} và \textbf{kiểm tra}.
+
+\subsection{Hàm cross\_validation\_model(Df\_np, k\_cluster)}
+    Đây là hàm sẽ thực huấn luyện để tìm ra độ chính xác của mô hình nhờ phương pháp \textbf{K-fold Cross Validation}. Về ý tưởng, cách thức cài đặt sẽ khá giống với hàm \textbf{Best\_Feature\_Personality} và \textbf{Best\_Feature\_Skill}, nhưng hàm này sẽ thực hiện huấn luyện trên tất cả các đặc trưng trong mảng \textbf{Df\_np} truyền đầu vào cùng với số nhóm muốn dữ liệu được chia và \textbf{trả về độ chính xác của mô hình}.
+
+\subsection{Hàm model\_variance\_Dropping(X\_train)}
+    Đây là hàm sẽ hỗ trợ cho phương pháp xây dưng mô hình trong yêu cầu \textbf{3} trong phần \hyperref[sec:requirement]{\underline{YÊU CẦU ĐỒ ÁN}}, với tên gọi: \hyperref[sec:dropping-constant-feature]{\underline{Dropping Constant Feature}}, dựa trên giá trị \textbf{phương sai} của các đặc trưng. Tham số truyền vào sẽ là \textbf{X\_train} là tập dữ liệu huấn luyện của các đặc trưng không phụ thuộc. Hàm sẽ thực hiện \textbf{tìm ra các đặc trưng có phương sai lớn hơn ngưỡng} và \textbf{trả về tên các đặc trưng đó}.
+
+\subsection{Hàm model\_correlation\_Dropping(X\_train, threshold)}
+    Đây là hàm sẽ hỗ trợ cho phương pháp xây dưng mô hình trong yêu cầu \textbf{4} trong phần \hyperref[sec:requirement]{\underline{YÊU CẦU ĐỒ ÁN}},với tên gọi: \hyperref[sec:dropping-correlation-feature]{\underline{Dropping high-correlation Feature}}, dựa trên giá trị \textbf{phương sai} của các đặc trưng. Tham số truyền vào sẽ là \textbf{X\_train} là tập dữ liệu huấn luyện của các đặc trưng không phụ thuộc và mức độ tương quan mong muốn giữa các đặc trưng mong. Hàm sẽ thực hiện \textbf{chọn ra các đặc trưng có mức độ tương quan lớn hơn \textbf{threshold}} và \textbf{trả về tên các đặc trưng đó}.
+
+\subsection{Hàm model\_MutualInfor\_selection(X\_train, Y\_train)}
+    Đây là hàm sẽ hỗ trợ cho phương pháp xây dưng mô hình trong yêu cầu \textbf{4} trong phần \hyperref[sec:requirement]{\underline{YÊU CẦU ĐỒ ÁN}},với tên gọi: \hyperref[sec:selecting-mutual-feature]{\underline{Selecting high-MI Feature}}, dựa trên giá trị \textbf{mutual information} của các đặc trưng. Tham số truyền vào sẽ là \textbf{X\_train} là tập dữ liệu huấn luyện của các đặc trưng không phụ thuộc và \textbf{Y\_train} là tập dữ liệu của đặc trưng phụ thuộc. Hàm sẽ thực hiện \textbf{chọn ra các đặc trưng có mức độ liên quan tới đặc trưng phụ thuộc cao} và \textbf{trả về  tên các đặc trưng đó}.
+
+\subsection{Hàm my\_best\_model(models)}
+    Đây là hàm sẽ tìm model nào tốt nhất từ mảng các \textbf{models} truyền vào qua phương pháp \textbf{K-fold Cross Validation}. Hàm sẽ \textbf{trả về số thứ tự của model tốt nhất trong mảng}.
+
+\subsection{Hàm train\_my\_best\_model()}
+    Đây là hàm huấn luyện model tốt nhất mà đã tìm được. \textbf{Đầu vào} của  hàm sẽ không có tham số, nhưng hàm sẽ \textbf{trả về giá trị/tập giá trị của dữ liệu phụ thuộc được dự đoán và kiểm tra}.
+
+\section{KẾT QUẢ CỦA CÁC YÊU CẦU}
+    \subsection{Yêu cầu 1}
+        \subsubsection{Các bước thực hiện}
+            \begin{enumerate}
+                \item Truy xuất dữ liệu của 11 cột đặc trưng được yêu cầu (11 cột đầu tiên) trong tập huấn luyện và tập kiểm tra.
+                \item Truy xuất cột 'Salary' - là cột mục tiêu trong tập huấn luyện và tập kiểm tra.
+                \item Tìm trọng số của mô hình hồi quy tuyến tính bằng cách sử dụng phương thức \textbf{fit} của lớp \hyperref[sec:olslinearregression]{\textbf{OLSLinearRegression}} với dữ liệu đầu vào là tập huấn luyện của 11 đặc trưng yêu cầu và đặc trưng mục tiêu 'Salary'.
+                \item Sử dụng phương thức \textbf{predict} của lớp \hyperref[sec:olslinearregression]{\textbf{OLSLinearRegression}} để dự đoán giá trị mục tiêu của tập kiểm tra.
+                \item Sử dụng hàm \hyperref[sec:mae]{\textbf{mae}}  để tính độ chính xác của mô hình.
+            \end{enumerate}
+
+        \subsubsection{Công thức cho mô hình hồi quy (trọng số làm tròn tới 3 chữ số thập phân) và kết quả trên tập kiểm tra}
+            \begin{itemize}
+                \item     
+                    \begin{align}
+                        \begin{split}
+                            \text{Salary} &= (-22756.513) \cdot X_1 + 804.503 \cdot X_2 + 1294.655 \cdot X_3 \\
+                            &\quad + (-91781.898) \cdot X_4 + 23182.389 \cdot X_5 + 1437.549 \cdot X_6 \\
+                            &\quad + (-8570.662) \cdot X_7 + 147.858 \cdot X_8 + 152.888 \cdot X_9 \\
+                            &\quad + 117.222 \cdot X_{10} + 34552.286 \cdot X_{11}
+                        \end{split}
+                    \end{align}
+                \item Độ chính xác của mô hình trên tập kiểm tra là: \textbf{104863.77754033315}
+            \end{itemize}
+
+    \subsection{Yêu cầu 2}
+        \subsubsection{Các bước thực hiện}
+        Cài đặt \hyperref[sec:bestpersonalityfeaturemodel]{\textbf{best\_personality\_feature\_model}} sẽ dùng để thực hiện yêu cầu 2 như sau:
+            \begin{enumerate}
+                \item Khởi tạo mảng chứa tên 5 đặc trưng tính cách vì trong bộ dữ liệu, 5 đặc trưng này đứng liên tiếp nhau.
+                \item Thực hiện đổi chỗ ngẫu nhiên của cac dòng dữ liệu 1 lần.
+                \item Gọi hàm \hyperref[sec:BestFeaturePersonality]{\textbf{Best\_Feature\_Personality}}  để tìm ra đặc trưng tốt nhất theo phương pháp \hyperref[sec:k-fold-cross-validation]{K-fold Cross Validation}.
+                \begin{enumerate}
+                    \item Thực hiện chia bộ dữ liệu huấn luyện thành 10 nhóm đều nhau (sử dụng hàm \textbf{numpy.array\_split}).
+                    \item Thực hiện huấn luyện trên từng phần:
+                        \begin{itemize}
+                            \item Gọi hàm \hyperref[sec:getTrain]{\textbf{getTrain}} để lấy tập dữ liệu huấn luyện và tập kiểm tra là phần dữ liệu đang xét.
+                            \item Với mỗi đặc trưng tính cách, thực hiện huấn luyện mô hình và tính độ chính xác của mô hình, lưu lại độ chính xác của mô hình trong mảng \textbf{mae\_arr}.
+                        \end{itemize}
+                    \item Sau khi xét hết phần dữ liệu, mảng \textbf{mae\_arr} thu được gồm 10 dòng và 5 cột tương đương với 10 phần dữ liệu được chia và 5 đặc trưng của mỗi dòng.
+                    \item Tính độ chính xác trung bình của mỗi đặc trưng bằng cách lấy trung bình cộng của mỗi cột trong mảng \textbf{mae\_arr} và trả ra giá trị thứ tự của đặc trưng có \textbf{mae} nhỏ nhất.
+                \end{enumerate}
+                \item Sau khi tìm được đặc trưng tốt nhất, tiến hình truy xuất dữ liệu của đặc trưng đó để huấn luyện mô hình bằng cách sử dụng hàm \textbf{fit} của lớp \hyperref[sec:olslinearregression]{\textbf{OLSLinearRegression}}  và tính độ chính xác của mô hình bằng cách sử dụng hàm \hyperref[sec:mae]{\textbf{mae}}.
+            \end{enumerate}
+        
+        \subsubsection{Kết quả tương ứng cho 5 mô hình từ k-fold Cross Validation}
+
+    \begin{table}[H]
+        \centering
+        \resizebox{\textwidth}{!}{%
+        \begin{tabular}{|c|c|c|}
+        \hline
+        \multicolumn{1}{|l|}{STT} & \multicolumn{1}{l|}{Mô hình với 1 đặc trưng} & MAE             \\ \hline
+        1                         & conscientiousness                            & 306267.12993085 \\ \hline
+        2                         & agreeableness                                & 300894.66699364 \\ \hline
+        3                         & extraversion                                 & 307070.11566216 \\ \hline
+        4                         & neuroticism                                  & 299387.84192331 \\ \hline
+        5                         & openness\_to\_experience                     & 303008.96858233 \\ \hline
+        \end{tabular}%
+        }
+    \end{table}
+
+    \subsubsection{Kết quả tương ứng cho mô hình tốt nhất}
+    \begin{itemize}
+        \item Mô hình tốt nhất là mô hình có đặc trưng \textbf{neuroticism} với độ chính xác trung bình là: \textbf{299387.84192331}
+        \item Công thức hồi quy tuyến tính của mô hình tốt nhất: 
+        \begin{equation}
+            \text{Salary} = (-56546.304)*neuroticism
+        \end{equation}
+        \item Kết quả \textbf{mae} là: 291019.693226953
+    \end{itemize}
+
+    \subsubsection{Nhận xét}
+    \begin{itemize}
+        \item Kết quả của \textbf{k-fold Cross Validation} đã cho độ chính xác của đặc trưng \textbf{neuroticism} là tốt nhất,
+    \end{itemize}
 \section{TÀI LIỆU THAM KHẢO}
 \begin{itemize}
     \item Cô Phan Thị Phương Uyên.
