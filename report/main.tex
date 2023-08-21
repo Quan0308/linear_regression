@@ -135,7 +135,11 @@
 
 \renewcommand\thesection{\arabic{section}} % Section start from 1,2,3...
 \renewcommand\thesubsection{\thesection.\arabic{subsection}} % Subsection start from 1,2,3,...
-\renewcommand\thesubsubsection{\alph{subsubsection}} 
+\renewcommand\thesubsubsection{\alph{subsubsection}}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
 \titleformat*{\section}{\Large\bfseries}
 \titleformat*{\subsection}{\Large\bfseries}
@@ -259,10 +263,10 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
 \subsection{Hàm best\_personality\_feature\_model()}\label{sec:bestpersonalityfeaturemodel}
     Đây là hàm sẽ thực hiện huấn luyện mô hình theo đặc trưng tốt nhất mà được tìm thấy ở hàm \textbf{Best\_Feature\_Personality}. Tham số truyền vào sẽ không có, nhưng giá trị trả về của hàm lần lượt 2 giá trị/tập giá trị \textbf{dự đoán} và \textbf{kiểm tra}.
 
-\subsection{Hàm Best\_Feature\_Skill(Df\_np, k\_cluster)}\label{sec:BestFeaturePersonality}
+\subsection{Hàm Best\_Feature\_Skill(Df\_np, k\_cluster)}\label{sec:BestFeatureSkill}
     Đây là hàm giúp tìm ra đặc trưng kĩ năng tốt nhất trong 3 kĩ năng ở yêu cầu \textbf{3} trong phần \hyperref[sec:requirement]{\underline{YÊU CẦU ĐỒ ÁN}}. Giá trị đầu vào sẽ là \textbf{Df\_np} là tập dữ liệu đã được chuyển thành dạng \textbf{numpy array} và \textbf{k\_cluster} là số lượng cụm cần phải chia. Hàm sẽ thực hiện huấn luyện từng đặc trưng kĩ năng trên từng phần và sau cùng \textbf{trả về số thứ tự của đặc trưng kĩ nang9 tốt nhất}.Việc chọn ra đặc trưng tốt nhất sẽ được thực hiện dựa trên so sánh \textbf{MAE trung bình} của từng đặc trưng sau khi huấn luyện trên từng \textbf{k\_cluster} phần dữ liệu.
 
-\subsection{Hàm best\_skill\_feature\_model()}
+\subsection{Hàm best\_skill\_feature\_model()}\label{sec:bestskillfeaturemodel}
     Đây là hàm sẽ thực hiện huấn luyện mô hình theo đặc trưng tốt nhất mà được tìm thấy ở hàm \textbf{Best\_Feature\_Skill}. Tham số truyền vào sẽ không có, nhưng giá trị trả về của hàm lần lượt 2 giá trị/tập giá trị \textbf{dự đoán} và \textbf{kiểm tra}.
 
 \subsection{Hàm cross\_validation\_model(Df\_np, k\_cluster)}
@@ -288,8 +292,8 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
         \subsubsection{Các bước thực hiện}
             \begin{enumerate}
                 \item Truy xuất dữ liệu của 11 cột đặc trưng được yêu cầu (11 cột đầu tiên) trong tập huấn luyện và tập kiểm tra.
-                \item Truy xuất cột 'Salary' - là cột mục tiêu trong tập huấn luyện và tập kiểm tra.
-                \item Tìm trọng số của mô hình hồi quy tuyến tính bằng cách sử dụng phương thức \textbf{fit} của lớp \hyperref[sec:olslinearregression]{\textbf{OLSLinearRegression}} với dữ liệu đầu vào là tập huấn luyện của 11 đặc trưng yêu cầu và đặc trưng mục tiêu 'Salary'.
+                \item Truy xuất cột Salary - là cột mục tiêu trong tập huấn luyện và tập kiểm tra.
+                \item Tìm trọng số của mô hình hồi quy tuyến tính bằng cách sử dụng phương thức \textbf{fit} của lớp \hyperref[sec:olslinearregression]{\textbf{OLSLinearRegression}} với dữ liệu đầu vào là tập huấn luyện của 11 đặc trưng yêu cầu và đặc trưng mục tiêu Salary.
                 \item Sử dụng phương thức \textbf{predict} của lớp \hyperref[sec:olslinearregression]{\textbf{OLSLinearRegression}} để dự đoán giá trị mục tiêu của tập kiểm tra.
                 \item Sử dụng hàm \hyperref[sec:mae]{\textbf{mae}}  để tính độ chính xác của mô hình.
             \end{enumerate}
@@ -323,7 +327,7 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
                             \item Với mỗi đặc trưng tính cách, thực hiện huấn luyện mô hình và tính độ chính xác của mô hình, lưu lại độ chính xác của mô hình trong mảng \textbf{mae\_arr}.
                         \end{itemize}
                     \item Sau khi xét hết phần dữ liệu, mảng \textbf{mae\_arr} thu được gồm 10 dòng và 5 cột tương đương với 10 phần dữ liệu được chia và 5 đặc trưng của mỗi dòng.
-                    \item Tính độ chính xác trung bình của mỗi đặc trưng bằng cách lấy trung bình cộng của mỗi cột trong mảng \textbf{mae\_arr} và trả ra giá trị thứ tự của đặc trưng có \textbf{mae} nhỏ nhất.
+                    \item Tính độ chính xác trung bình của mỗi đặc trưng bằng cách lấy trung bình cộng của mỗi cột trong mảng \textbf{mae\_arr} và trả ra giá trị thứ tự của đặc trưng có \textbf{mae} nhỏ nhất. Một điều lưu ý là giá trị \textbf{mae trung bình} của mỗi đặc trưng sẽ thay đổi mỗi khi chạy chương trình vì việc đổi chỗ các dòng dữ liệu là ngẫu nhiên và khác nhau. 
                 \end{enumerate}
                 \item Sau khi tìm được đặc trưng tốt nhất, tiến hình truy xuất dữ liệu của đặc trưng đó để huấn luyện mô hình bằng cách sử dụng hàm \textbf{fit} của lớp \hyperref[sec:olslinearregression]{\textbf{OLSLinearRegression}}  và tính độ chính xác của mô hình bằng cách sử dụng hàm \hyperref[sec:mae]{\textbf{mae}}.
             \end{enumerate}
@@ -347,7 +351,7 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
 
     \subsubsection{Kết quả tương ứng cho mô hình tốt nhất}
     \begin{itemize}
-        \item Mô hình tốt nhất là mô hình có đặc trưng \textbf{neuroticism} với độ chính xác trung bình là: \textbf{299387.84192331}
+        \item Mô hình tốt nhất là mô hình đặc trưng \textbf{neuroticism} với độ chính xác trung bình là: \textbf{299387.84192331}
         \item Công thức hồi quy tuyến tính của mô hình tốt nhất: 
         \begin{equation}
             \text{Salary} = (-56546.304)*neuroticism
@@ -357,8 +361,100 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
 
     \subsubsection{Nhận xét}
     \begin{itemize}
-        \item Kết quả của \textbf{k-fold Cross Validation} đã cho độ chính xác của đặc trưng \textbf{neuroticism} là tốt nhất,
+        \item Kết quả của \textbf{k-fold Cross Validation} đã cho độ chính xác của đặc trưng \textbf{neuroticism} là tốt nhất, và kết quả này cũng đã được xác nhận qua các bài nghiên cứu thực tế. Theo bài nghiên cứu của trường đại học kinh tế \href{https://kse.ua/}{\textbf{Kyiv}} (ở Ukraine), 2 trong 5 tính cách có ảnh hưởng nhiều nhất tới mức lương của mỗi cá nhân đó là đức tính \textbf{hài lòng (agreeableness)} và \textbf{nhạy cảm trong cảm xúc(neuroticism)}.
+        \item Trong đó, mức độ ảnh hưởng của sự nhạy cảm sẽ nhỉnh hơn một chút so với đức tính hòa thuận. Các dữ liệu được tiến hành nghiên cứu tại các nước như Đức, Anh, và Hà Lan ở \href{https://kse.ua/kse-research/relationship-between-your-personality-and-your-salary-level/}{đây} đã chỉ ra rằng: trong khi mức độ của sự hài lòng làm giảm từ 2-5\% mức lương ở Đức, hay 4-6\% ở Anh, thì mức độ nhạy cảm trong cảm xúc càng cao thì mức lương giảm khoảng 3\% ở Đức và 6\% ở Anh.
+        \item Điều này cũng rất hợp lý vì những người có mức độ hài lòng cao sẽ có xu hướng ít phấn đấu để  cố gắng đạt mức lương cao hơn, hay người có sự không ổn định nhiều trong cảm xúc sẽ làm cho người đó luôn bị phân tâm, cảm thấy mệt mỏi, tiêu cực và điều này ảnh hưởng rất xấu tới công việc hay sự cố gắng của họ ở thời điểm đó. Chính vì vậy ngay trong bảng kết quả của \textbf{k-fold Cross Validation} đã cho thấy đặc trưng \textbf{neuroticism} và \textbf{agreeableness} có độ chính xác khá bằng nhau và \textbf{neuroticism} là tính cách có giá trị thấp hơn.
     \end{itemize}
+
+\subsection{Yêu cầu 3}
+    \subsubsection{Các bước thực hiện}
+    Cài đặt \hyperref[sec:bestskillfeaturemodel]{\textbf{best\_skill\_feature\_model}} sẽ dùng để thực hiện yêu cầu 2 như sau:
+        \begin{enumerate}
+            \item Khởi tạo mảng chứa tên 3 đặc trưng kĩ năng để truy xuất các dữ liệu của 3 đặc trưng này.
+            \item Thực hiện đổi chỗ ngẫu nhiên của cac dòng dữ liệu 1 lần.
+            \item Gọi hàm \hyperref[sec:BestFeatureSkill]{\textbf{Best\_Feature\_Skill}}  để tìm ra đặc trưng tốt nhất theo phương pháp \hyperref[sec:k-fold-cross-validation]{K-fold Cross Validation}.
+            \begin{enumerate}
+                \item Thực hiện chia bộ dữ liệu huấn luyện thành 10 nhóm đều nhau (sử dụng hàm \textbf{numpy.array\_split}).
+                \item Thực hiện huấn luyện trên từng phần:
+                    \begin{itemize}
+                        \item Gọi hàm \hyperref[sec:getTrain]{\textbf{getTrain}} để lấy tập dữ liệu huấn luyện và tập kiểm tra là phần dữ liệu đang xét.
+                        \item Với mỗi đặc trưng tính cách, thực hiện huấn luyện mô hình và tính độ chính xác của mô hình, lưu lại độ chính xác của mô hình trong mảng \textbf{mae\_arr}.
+                    \end{itemize}
+                \item Sau khi xét hết phần dữ liệu, mảng \textbf{mae\_arr} thu được gồm 10 dòng và 3 cột tương đương với 10 phần dữ liệu được chia và 3 đặc trưng của mỗi dòng.
+                \item Tính độ chính xác trung bình của mỗi đặc trưng bằng cách lấy trung bình cộng của mỗi cột trong mảng \textbf{mae\_arr} và trả ra giá trị thứ tự của đặc trưng có \textbf{mae} nhỏ nhất. Một điều lưu ý là giá trị \textbf{mae trung bình} của mỗi đặc trưng sẽ thay đổi mỗi khi chạy chương trình vì việc đổi chỗ các dòng dữ liệu là ngẫu nhiên và khác nhau. 
+            \end{enumerate}
+            \item Sau khi tìm được đặc trưng tốt nhất, tiến hình truy xuất dữ liệu của đặc trưng đó để huấn luyện mô hình bằng cách sử dụng hàm \textbf{fit} của lớp \hyperref[sec:olslinearregression]{\textbf{OLSLinearRegression}}  và tính độ chính xác của mô hình bằng cách sử dụng hàm \hyperref[sec:mae]{\textbf{mae}}.
+        \end{enumerate}
+    \subsubsection{Kết quả tương ứng cho 3 mô hình từ k-fold Cross Validation}
+    \begin{table}[H]
+        \centering
+        \resizebox{\textwidth}{!}{%
+        \begin{tabular}{|c|c|c|}
+        \hline
+        \multicolumn{1}{|l|}{STT} & \multicolumn{1}{l|}{Mô hình với 1 đặc trưng} & MAE        \\ \hline
+        1                         & English                                      & 121837.9   \\ \hline
+        2                         & Logical                                      & 120230.589 \\ \hline
+        3                         & Quant                                        & 118051.624 \\ \hline
+        \end{tabular}%
+        }
+    \end{table}
+
+    \subsubsection{Kết quả tương ứng cho mô hình tốt nhất}
+    \begin{itemize}
+        \item Mô hình tốt nhất là mô hình đặc trưng \textbf{Quant} với độ chính xác trung bình là: \textbf{118051.624}
+        \item Công thức hồi quy tuyến tính của mô hình tốt nhất: 
+        \begin{equation}
+            \text{Salary} = (585.895)*neuroticism
+        \end{equation}
+        \item Kết quả \textbf{mae} là: 106819.5776198967
+    \end{itemize}
+
+    \subsubsection{Nhận xét}
+    \begin{itemize}
+        \item Kết quả của đánh giá các mô hình từng kĩ năng đã cho thấy \textbf{kĩ năng định lượng (quantitative skill)} là đặc trưng tốt nhất trong 3 đặc trưng. Kĩ năng định lượng là kĩ năng đưa ra đánh giá, nhận xét một vấn đề nào đó dưới góc nhìn toán học, các thông số dữ liệu khổng lồ thể hiện dạng bảng, biểu đồ, đồ thị. Theo nghiên cứu của \href{https://www.journals.uchicago.edu/}{nhà xuất bản Đại học Chicago} ở \href{https://www.journals.uchicago.edu/doi/abs/10.1086/298239}{đây} đã cho rằng các kĩ năng, khả năng toán học là sự tạo ra khác biệt giữa mức độ thu nhập của mỗi người theo mô hình \href{https://www.open.edu/openlearn/mod/oucontent/view.php?id=67143&section=4}{Human Capital} (mô hình nghiên cứu về sự tăng trưởng kinh tế). Sự khan hiếm trong nhân lực có trình độ toán học cao sẽ làm cho mức lương của họ tăng lên có thể thấy ở các ngành nghề thực tế, đặc trưng nhất là \textbf{Data Science hay Data Analyst} - những ngành nghề đòi hỏi kĩ năng toán học cao.
+        \item Chính vì sự cách biệt lớn giữa mức độ lương được tạo ra bởi kĩ năng định lương cho thấy kĩ năng này sẽ dự đoán được mức lương tốt hơn 2 kĩ năng còn lại là ngoại ngữ (tiếng anh) và kĩ năng suy nghĩ logic. Thêm vào đó, dựa vào hệ số mà mô hình được huấn luyện bởi đặc trưng định lượng là một hệ số dương, cho thấy mức lương sẽ tỉ lệ thuận với mức độ của đặc trưng này.
+    \end{itemize}
+
+\subsection{Yêu cầu 4}
+Ở yêu cầu này sinh viên phải tự xây dựng các mô hình và chọn ra mô hình tốt nhất, chính vì thế dưới đây sẽ là phần nêu ra phương pháp và quá trình để chọn ra các mô hình. Tổng cộng có 3 mô hình được lựa chọn từ 3 phương pháp khác nhau, lần lượt là:
+\begin{enumerate}
+    \item Loại bỏ các đặc trưng có phương sai thấp.
+    \item Loại bỏ các đặc trưng có mức độ tương quan cao.
+    \item Chọn ra các đặc trưng có mức độ liên quan cao với đặc trưng mục tiêu.
+\end{enumerate}
+    \subsubsection{Lựa chọn mô hình}
+        \paragraph{Loại bỏ các đặc trưng có phương sai thấp (dropping constant feature)}
+    Mô hình đầu tiên được thực hiện theo phương pháp loại bỏ các \textbf{constant feature}. \textbf{Constant feature} là đặc trưng mà ở mỗi trạng thái (các dòng) hầu như đưa ra chỉ duy nhất 1 giá trị mà thôi. Giả sử ta có bộ dữ liệu như sau:
+\begin{table}[h]
+    \centering
+    \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \multicolumn{1}{|l|}{Target} & \multicolumn{1}{l|}{Feature 1} & Feature 2  & \multicolumn{1}{l|}{Feature 3} \\ \hline
+    1                            & 10                             & 1                            & 20                             \\ \hline
+    2                            & 19                             & 1                            & 11                             \\ \hline
+    3                            & 38                             & 1                            & 47                             \\ \hline
+    \end{tabular}%
+    }
+    \end{table}\\
+    Có thể thấy ở \textbf{feature 2}, dù cho trong trường hợp nào thì giá trị của đặc trưng này vẫn sẽ là \textbf{1}, lúc này feature 2 được gọi là \textbf{constant feature}. Việc giữ lại các đặc trưng này sẽ không có ý nghĩa gì vì chúng không đóng góp vào việc dự đoán mục tiêu. Chính vì vậy, ta sẽ loại bỏ các đặc trưng này đi.\\
+
+    Để có thể loại bỏ các đặc trưng này thì sẽ xét giá trị \textbf{phương sai (variance)} của các đặc trưng. Variance là một đo lường cho mức độ biến đổi của các giá trị trong một tập dữ liệu. Khi tất cả các giá trị trong một feature đều giống nhau, không có sự thay đổi giữa chúng, do đó, variance của feature này là 0.\\
+
+    Để có thể xác định các phương sai của các đặc trưng trong bộ dữ liệu, ta sẽ sử dụng hàm \textbf{var} của thư viện \textbf{pandas}, và giá trị phương sai của các đặc trưng có giá trị như sau: 
+
+    \begin{figure}[H]
+        \includegraphics[width=\textwidth, height=0.5\textheight, keepaspectratio]{assets/variance.png}
+        \centering
+        \caption{Bảng giá trị phương sai của các đặc trưng}
+    \end{figure}
+    
+    Dựa vào bảng phương sai của các đặc trưng, ta sẽ thực hiện loại bỏ các đặc trưng có giá trị phương sai nhỏ hơn 0.1 (các giá trị này có thể được tính xấp xỉ như bằng 0). Sau khi loại bỏ các đặc trưng này, ta sẽ thu được bộ dữ liệu mới với 22 đặc trưng như sau:\\
+    Gender, 10percentage, 12percentage, collegeGPA, CollegeCityTier, English, Logical, Quant, Domain, ComputerProgramming, ElectronicsAndSemicon, ComputerScience, MechanicalEngg, ElectricalEngg, TelecomEngg, CivilEngg, conscientiousness, agreeableness, extraversion, nueroticism, openess\_to\_experience
+    
+
+
+\newpage
 \section{TÀI LIỆU THAM KHẢO}
 \begin{itemize}
     \item Cô Phan Thị Phương Uyên.
