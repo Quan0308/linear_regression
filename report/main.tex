@@ -249,11 +249,28 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
         \end{equation}
     \end{itemize}
 
+\subsection{Lớp VarianceThreshold}
+Đây là lớp được cung cấp bởi thư viện \textbf{sklearn.feature\_selection}, lớp này sẽ giúp có thể loại bỏ các đặc trưng có \textbf{phương sai} nhỏ hơn ngưỡng được đặt trước, cụ thể là:
+    \begin{itemize}
+        \item \textbf{VarianceThreshold(threshold)}: phương thức khởi tạo lớp, \textbf{tham số truyền vào} sẽ là ngưỡng để loại bỏ các đặc trưng có phương sai nhỏ hơn ngưỡng này.
+        \item \textbf{fit(X\_train)}: phương thức sẽ thực hiện tính giá trị phương sai của các đặc trưng trong \textbf{X\_train}.
+        Hàm loại bỏ các đặc trưng có phương sai nhỏ hơn ngưỡng \textbf{threshold} được đặt trước.Phương thức sẽ \textbf{không trả về giá trị nào} nhưng sẽ loại bỏ các đặc trưng có phương sai nhỏ hỡn ngưỡng của bộ dữ liệu đã được truyền vào.
+    \end{itemize}
+\subsection{Lớp mutual\_info\_regression}
+    Đây là lớp được cung cấp bởi thư viện \textbf{sklearn.feature\_selection} được dùng để tính toán độ tương quan giữa các đặc trưng và mục tiêu, trong đó:
+    \begin{itemize}
+        \item \textbf{mutual\_info\_regression(X, y)}: phương thức khởi tạo lớp, \textbf{tham số truyền vào} sẽ là \textbf{ma trận các đặc trưng} và \textbf{vector mục tiêu}.Giá trị \textbf{trả về} của phương thức là mảng chứa các giá trị \textbf{mutual information} tương ứng với các đặc trưng.
+    \end{itemize}
+
+\subsection{Lớp SelectPercentile}
+    Đây là lớp được cung cấp bởi thư viện \textbf{sklearn.feature\_selection}, lớp này khi sử dụng \textbf{phương thức khởi tạo SelectPercentile} thì cần truyền vào \textbf{phương thức tính độ tương quan} giữa các đặc trưng và mục tiêu, và \textbf{phần trăm} các đặc trưng muốn chọn. Giá trị \textbf{trả về} của phương thức là mảng chứa các đặc trưng có độ tương quan cao nhất với mục tiêu.
+
 \subsection{Hàm mae(y\_pred, y\_test)}\label{sec:mae}
     Đây là hàm được cô \textbf{Phan Thị Phương Uyên} cung cấp, tham số truyền vào sẽ là \textbf{giá trị/tập giá trị dự đoán và giá trị/tập giá trị kiểm tra}. Hàm sẽ \textbf{trả về giá trị thể hiện độ chính xác} của giá trị được dự đoán, giá trị càng thấp thì độ chính xác càng cao. Công thức để tính độ chính xác là:
     \begin{equation}
         MAE = \frac{1}{n}\sum_{i=1}^{n}|y_{pred} - y_{test}|
     \end{equation}
+
 
 \subsection{Hàm getTrain(index, folks)}\label{sec:getTrain}
     Đây là hàm hỗ trợ cho việc xác định tập dữ liệu \textbf{huấn luyện} trong phương pháp \hyperref[sec:k-fold-cross-validation]{\underline{K-fold Cross Validation}}. Giá trị đầu vào sẽ là \textbf{index} của phần dữ liệu đang xét và \textbf{folks} là tập dữ liệu đã được chia. Hàm sẽ \textbf{trả về tập dữ liệu huấn luyện}.
@@ -280,7 +297,7 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
     Đây là hàm sẽ hỗ trợ cho phương pháp xây dưng mô hình trong yêu cầu \textbf{4} trong phần \hyperref[sec:requirement]{\underline{YÊU CẦU ĐỒ ÁN}},với tên gọi: \hyperref[sec:dropping-correlation-feature]{\underline{Dropping high-correlation Feature}}, dựa trên giá trị \textbf{phương sai} của các đặc trưng. Tham số truyền vào sẽ là \textbf{X\_train} là tập dữ liệu huấn luyện của các đặc trưng không phụ thuộc và mức độ tương quan mong muốn giữa các đặc trưng mong. Hàm sẽ thực hiện \textbf{chọn ra các đặc trưng có mức độ tương quan lớn hơn \textbf{threshold}} và \textbf{trả về tên các đặc trưng đó}.
 
 \subsection{Hàm model\_MutualInfor\_selection(X\_train, Y\_train)}
-    Đây là hàm sẽ hỗ trợ cho phương pháp xây dưng mô hình trong yêu cầu \textbf{4} trong phần \hyperref[sec:requirement]{\underline{YÊU CẦU ĐỒ ÁN}},với tên gọi: \hyperref[sec:selecting-mutual-feature]{\underline{Selecting high-MI Feature}}, dựa trên giá trị \textbf{mutual information} của các đặc trưng. Tham số truyền vào sẽ là \textbf{X\_train} là tập dữ liệu huấn luyện của các đặc trưng không phụ thuộc và \textbf{Y\_train} là tập dữ liệu của đặc trưng phụ thuộc. Hàm sẽ thực hiện \textbf{chọn ra các đặc trưng có mức độ liên quan tới đặc trưng phụ thuộc cao} và \textbf{trả về  tên các đặc trưng đó}.
+    Đây là hàm sẽ hỗ trợ cho phương pháp xây dưng mô hình trong yêu cầu \textbf{4} trong phần \hyperref[sec:requirement]{\underline{YÊU CẦU ĐỒ ÁN}},với tên gọi: \hyperref[sec:selecting-MI-feature]{\underline{Selecting high-MI Feature}}, dựa trên giá trị \textbf{mutual information} của các đặc trưng. Tham số truyền vào sẽ là \textbf{X\_train} là tập dữ liệu huấn luyện của các đặc trưng không phụ thuộc và \textbf{Y\_train} là tập dữ liệu của đặc trưng phụ thuộc. Hàm sẽ thực hiện \textbf{chọn ra các đặc trưng có mức độ liên quan tới đặc trưng phụ thuộc cao} và \textbf{trả về  tên các đặc trưng đó}.
 
 \subsection{Hàm my\_best\_model(models)}
     Đây là hàm sẽ tìm model nào tốt nhất từ mảng các \textbf{models} truyền vào qua phương pháp \textbf{K-fold Cross Validation}. Hàm sẽ \textbf{trả về số thứ tự của model tốt nhất trong mảng}.
@@ -440,7 +457,12 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
     \end{table}\\
     Có thể thấy ở \textbf{feature 2}, dù cho trong trường hợp nào thì giá trị của đặc trưng này vẫn sẽ là \textbf{1}, lúc này feature 2 được gọi là \textbf{constant feature}. Việc giữ lại các đặc trưng này sẽ không có ý nghĩa gì vì chúng không đóng góp vào việc dự đoán mục tiêu. Chính vì vậy, ta sẽ loại bỏ các đặc trưng này đi.\\
 
-    Để có thể loại bỏ các đặc trưng này thì sẽ xét giá trị \textbf{phương sai (variance)} của các đặc trưng. Variance là một đo lường cho mức độ biến đổi của các giá trị trong một tập dữ liệu. Khi tất cả các giá trị trong một feature đều giống nhau, không có sự thay đổi giữa chúng, do đó, variance của feature này là 0.\\
+    Để có thể loại bỏ các đặc trưng này thì sẽ xét giá trị \textbf{phương sai (variance)} của các đặc trưng. Variance là một đo lường cho mức độ biến đổi của các giá trị trong một tập dữ liệu và giá trị ấy được tính theo công thức:
+    \begin{equation}
+        Var(X) = \frac{1}{n}\sum_{i=1}^{n}(x_i - \overline{x})^2
+    \end{equation}
+    với $x_i$ là 1 trong những giá trị của đặc trưng \textbf{X} và $\overline{x}$ là giá trị trung bình của đặc trưng \textbf{X}.
+    Khi tất cả các giá trị trong một feature đều giống nhau, không có sự thay đổi giữa chúng, do đó, variance của feature này là 0.\\
 
     Để có thể xác định các phương sai của các đặc trưng trong bộ dữ liệu, ta sẽ sử dụng hàm \textbf{var} của thư viện \textbf{pandas}, và giá trị phương sai của các đặc trưng có giá trị như sau: 
 
@@ -462,6 +484,34 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
     
     Đối với các mô hình hồi quy tuyến tính, một trong những giả định là các đặc trưng là độc lập tuyến tính với nhau. Nếu có sự tương quan giữa các đặc trưng, thì mô hình sẽ không thể xác định được đặc trưng nào là quan trọng hơn đặc trưng nào. Điều này sẽ làm cho mô hình không thể xác định được đặc trưng nào là quan trọng hơn đặc trưng nào, và dẫn tới việc mô hình sẽ không thể dự đoán được mục tiêu. Hiện tượng có các đặc trưng phụ thuộc vào nhau như vậy thì được gọi là hiện tượng \textbf{đa cộng tuyến (\href{https://en.wikipedia.org/wiki/Multicollinearity}{Multicollinearity})}.\\
 
+    Thêm vào đó, điều này cũng đã được chứng minh dưới góc nhìn toán học như ở \href{https://www.quora.com/Why-is-it-important-to-remove-correlated-variables-when-performing-machine-learning-If-2-variables-are-correlated-how-do-you-choose-which-one-to-exclude-from-the-data-set}{đây}. Tóm tắt lại rằng giá trị trọng số được tính theo:
+        \begin{equation}
+            W_{LS} = (X^T  X)^{-1}  X^T  Y
+        \end{equation}
+    với $X$ là ma trận các đặc trưng, $Y$ là ma trận mục tiêu. Dưới góc nhìn của phân tích hồi quy, giá trị của biến độc lập $y$ sẽ được phân phối bởi giá trị phương sai \textbf{$\sigma^2$}, theo giả định này giá trị phương sai của trọng số sẽ là:
+        \begin{equation}
+            Var[W_{LS}] = \sigma^2 * (X^T X)^{-1} 
+        \end{equation}
+    Theo bài nghiên cứu đối với mô hình được ổn định thì giá trị phương sai của trọng số phải nhỏ. Nếu giá trị phương sai càng lớn thì có nghĩa là giá trị của trọng số cũng sẽ lớn trong mô hình huấn luyện, điều này sẽ dẫn tới việc mô hình sẽ không thể dự đoán được mục tiêu.
+
+    Điều này được chứng minh thông qua \href{https://www.kaggle.com/code/phamdinhkhanh/singular-value-decomposition}{\textbf{phương pháp phân tích suy biến}}. Phương pháp này sẽ phân tích ma trận $X$ thành 3 ma trận $U, S, V$ sao cho:
+        \begin{equation}
+            X = U S V^T
+        \end{equation}
+    
+    Như vậy, phương sai của của trọng số có thể  được viết lại như sau:
+    \begin{align*}
+        \begin{split}    
+        \text{Var}[W_{LS}] &= \sigma^2 \cdot (X^T X)^{-1} \\
+                            &= \sigma^2 \cdot (V S^T U^T U S V^T)^{-1} \\
+                            &= \sigma^2 \cdot (V S^T S V^T)^{-1} \\
+                            &= \sigma^2 \cdot V (S^T S)^{-1} V^T\\
+                            &= \sigma^2 \cdot V S^{-2} V^T
+        \end{split}
+    \end{align*}
+    Vì vậy khi giá trị tương quan cao, giá trị của ma trận "S" sẽ nhỏ, và khi nghịch đảo ma trận S thì giá trị của nó sẽ càng lớn. Điều này sẽ dẫn tới việc giá trị phương sai của trọng số sẽ càng lớn.   
+    \\
+
     Để có thể xác định được các đặc trưng có mức độ tương quan cao với nhau thì ta sẽ sử dụng hàm \textbf{corr} của thư viện \textbf{pandas}. Bước đầu sẽ truy xuất tất cả cột thông tin của các đặc trưng ngoại trừ cột mục tiêu ("Salary"), tính hệ số tương quan và thể hiện giá trị tương quan của các đặc trưng dưới dạng biểu đồ heatmap như sau:
     \begin{figure}[H]
         \includegraphics[width=\textwidth, keepaspectratio]{assets/heatmap.png}
@@ -474,6 +524,7 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
     Sau khi loại bỏ các đặc trưng này, ta sẽ thu được bộ dữ liệu mới với 21 đặc trưng để tạo mô hình 2 như sau: \textbf{Gender, 10percentage, CollegeTier, Degree, collegeGPA, CollegeCityTier, English, Logical, Quant, Domain,
     ComputerProgramming, ElectronicsAndSemicon, ComputerScience, MechanicalEngg, CivilEngg, ElectricalEngg, TelecomEngg, conscientiousness, agreeableness, extraversion, nueroticism}.
 
+    \paragraph{Mô hình 3: Chọn ra các đặc trưng có mức độ liên quan cao với đặc trưng mục tiêu (selecting high-MI feature)}\label{sec:selecting-MI-feature}
     \newpage
 \section{TÀI LIỆU THAM KHẢO}
 \begin{itemize}
