@@ -18,6 +18,7 @@
 \usepackage{subfigure}
 \usepackage{tabularray}
 \usepackage{amsmath}
+\usepackage{indentfirst}
 
 % ========== [LANGUAGE] ==========
 \def\lang{1} % 0 == English, 1 == Vietnamese
@@ -178,7 +179,7 @@
     \item Sinh viên đã được cung cấp 2 bộ dữ liệu: \textbf{train.csv} và \textbf{test.csv}. Bộ dữ liệu \textbf{train.csv} gồm 2248 mẫu để huấn luyện mô hình , và bộ dữ liệu \textbf{test.csv} gồm 750 mẫu để kiểm tra mô hình.
 \end{itemize}
 
-\section{CÁC THƯ VIỆN SỬ DỤNG THÊM}
+\section{CÁC THƯ VIỆN SỬ DỤNG THÊM} \label{sec:library}
 Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} và \textbf{pandas}, sinh viên còn sử dụng thêm thư viện \textbf{sklearn} và sử dụng module \textbf{feature\_selection} của thư viện này. Trong module này sẽ sử dụng 3 lớp:
 \begin{itemize}
     \item \textbf{VarianceThreshold}: Loại bỏ các đặc trưng có \textbf{phương sai} nhỏ hơn ngưỡng được đặt trước.
@@ -272,7 +273,7 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
 \subsection{Hàm cross\_validation\_model(Df\_np, k\_cluster)}
     Đây là hàm sẽ thực huấn luyện để tìm ra độ chính xác của mô hình nhờ phương pháp \textbf{K-fold Cross Validation}. Về ý tưởng, cách thức cài đặt sẽ khá giống với hàm \textbf{Best\_Feature\_Personality} và \textbf{Best\_Feature\_Skill}, nhưng hàm này sẽ thực hiện huấn luyện trên tất cả các đặc trưng trong mảng \textbf{Df\_np} truyền đầu vào cùng với số nhóm muốn dữ liệu được chia và \textbf{trả về độ chính xác của mô hình}.
 
-\subsection{Hàm model\_variance\_Dropping(X\_train)}
+\subsection{Hàm model\_variance\_Dropping(X\_train)}\label{sec:droping-constant-feature}
     Đây là hàm sẽ hỗ trợ cho phương pháp xây dưng mô hình trong yêu cầu \textbf{3} trong phần \hyperref[sec:requirement]{\underline{YÊU CẦU ĐỒ ÁN}}, với tên gọi: \hyperref[sec:dropping-constant-feature]{\underline{Dropping Constant Feature}}, dựa trên giá trị \textbf{phương sai} của các đặc trưng. Tham số truyền vào sẽ là \textbf{X\_train} là tập dữ liệu huấn luyện của các đặc trưng không phụ thuộc. Hàm sẽ thực hiện \textbf{tìm ra các đặc trưng có phương sai lớn hơn ngưỡng} và \textbf{trả về tên các đặc trưng đó}.
 
 \subsection{Hàm model\_correlation\_Dropping(X\_train, threshold)}
@@ -423,7 +424,7 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
     \item Chọn ra các đặc trưng có mức độ liên quan cao với đặc trưng mục tiêu.
 \end{enumerate}
     \subsubsection{Lựa chọn mô hình}
-        \paragraph{Loại bỏ các đặc trưng có phương sai thấp (dropping constant feature)}
+        \paragraph{Mô hình 1: Loại bỏ các đặc trưng có phương sai thấp (dropping constant feature)}\label{sec:dropping-constant-feature}
     Mô hình đầu tiên được thực hiện theo phương pháp loại bỏ các \textbf{constant feature}. \textbf{Constant feature} là đặc trưng mà ở mỗi trạng thái (các dòng) hầu như đưa ra chỉ duy nhất 1 giá trị mà thôi. Giả sử ta có bộ dữ liệu như sau:
 \begin{table}[h]
     \centering
@@ -448,13 +449,32 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
         \centering
         \caption{Bảng giá trị phương sai của các đặc trưng}
     \end{figure}
-    
-    Dựa vào bảng phương sai của các đặc trưng, ta sẽ thực hiện loại bỏ các đặc trưng có giá trị phương sai nhỏ hơn 0.1 (các giá trị này có thể được tính xấp xỉ như bằng 0). Sau khi loại bỏ các đặc trưng này, ta sẽ thu được bộ dữ liệu mới với 22 đặc trưng như sau:\\
-    Gender, 10percentage, 12percentage, collegeGPA, CollegeCityTier, English, Logical, Quant, Domain, ComputerProgramming, ElectronicsAndSemicon, ComputerScience, MechanicalEngg, ElectricalEngg, TelecomEngg, CivilEngg, conscientiousness, agreeableness, extraversion, nueroticism, openess\_to\_experience
-    
 
+    
+    Dựa vào bảng phương sai của các đặc trưng, ta sẽ thực hiện loại bỏ các đặc trưng có giá trị phương sai nhỏ hơn 0.1 (các giá trị này có thể được tính xấp xỉ như bằng 0). Ta sẽ sử dụng lớp \hyperref[sec:library]{\textbf{VarianceThreshold}} với tham số  truyền vào phương thức khởi tạo là khoảng ngưỡng phương sai nhỏ nhất, và sử dụng phương thức \textbf{fit} của lớp này để loại bỏ các đặc trưng có phương sai nhỏ hơn ngưỡng này. Tất cả thao tác này được thực hiện trong hàm \hyperref[sec:droping-constant-feature]{\textbf{model\_variance\_dropping}}. \\
+    
+    Sau khi loại bỏ các đặc trưng này, ta sẽ thu được bộ dữ liệu mới với 22 đặc trưng như sau:
+    \textbf{Gender, 10percentage, 12percentage, collegeGPA, CollegeCityTier, English, Logical, Quant, Domain, ComputerProgramming, ElectronicsAndSemicon, ComputerScience, MechanicalEngg, CivilEngg , TelecomEngg, ElectricalEngg, conscientiousness, agreeableness, extraversion, nueroticism, openess\_to\_experience}.        
+    
+    \pagebreak
+        \paragraph{Mô hình 2: Loại bỏ các đặc trưng có mức độ tương quan cao (dropping high-correlation feature)}\label{sec:dropping-correlation-feature}
+    Hệ số tương quan (\textbf{Correlation coefficient}) là giá trị thể hiện mức độ liên kết giữa 2 đặc trưng. Hệ số tương quan có giá trị nằm trong khoảng [-1, 1], với 1 là tương quan hoàn toàn, -1 là tương quan hoàn toàn nghịch đảo và 0 là không có tương quan. Vậy câu hỏi được đặt ra là: \textbf{Vì sao hệ số tương quan lại ảnh hưởng tới quá trình huấn luyện dữ liệu?}\\ 
+    
+    Đối với các mô hình hồi quy tuyến tính, một trong những giả định là các đặc trưng là độc lập tuyến tính với nhau. Nếu có sự tương quan giữa các đặc trưng, thì mô hình sẽ không thể xác định được đặc trưng nào là quan trọng hơn đặc trưng nào. Điều này sẽ làm cho mô hình không thể xác định được đặc trưng nào là quan trọng hơn đặc trưng nào, và dẫn tới việc mô hình sẽ không thể dự đoán được mục tiêu. Hiện tượng có các đặc trưng phụ thuộc vào nhau như vậy thì được gọi là hiện tượng \textbf{đa cộng tuyến (\href{https://en.wikipedia.org/wiki/Multicollinearity}{Multicollinearity})}.\\
 
-\newpage
+    Để có thể xác định được các đặc trưng có mức độ tương quan cao với nhau thì ta sẽ sử dụng hàm \textbf{corr} của thư viện \textbf{pandas}. Bước đầu sẽ truy xuất tất cả cột thông tin của các đặc trưng ngoại trừ cột mục tiêu ("Salary"), tính hệ số tương quan và thể hiện giá trị tương quan của các đặc trưng dưới dạng biểu đồ heatmap như sau:
+    \begin{figure}[H]
+        \includegraphics[width=\textwidth, keepaspectratio]{assets/heatmap.png}
+        \centering
+        \caption{Biểu đồ heatmap thể hiện mức độ tương quan của các đặc trưng}
+    \end{figure}
+
+    Theo nội dung của biểu đồ, ta có thể  giá trị hệ số  cao nhất là 0.64 giữa 2 đặc trưng \textbf{10percentage và 12percentage}, ta có thể đánh giá tổng quan rằng các đặc trưng có mức độ tương quan không quá cao, tuy nhiên ta vẫn sẽ tiến hành loại bỏ 1 trong 2 đặc trưng có \textbf{giá trị (không quan tâm tới dấu của giá trị)} hệ số tương quan lớn hớn hoặc bằng 0.6.\\
+    
+    Sau khi loại bỏ các đặc trưng này, ta sẽ thu được bộ dữ liệu mới với 21 đặc trưng để tạo mô hình 2 như sau: \textbf{Gender, 10percentage, CollegeTier, Degree, collegeGPA, CollegeCityTier, English, Logical, Quant, Domain,
+    ComputerProgramming, ElectronicsAndSemicon, ComputerScience, MechanicalEngg, CivilEngg, ElectricalEngg, TelecomEngg, conscientiousness, agreeableness, extraversion, nueroticism}.
+
+    \newpage
 \section{TÀI LIỆU THAM KHẢO}
 \begin{itemize}
     \item Cô Phan Thị Phương Uyên.
