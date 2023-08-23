@@ -263,8 +263,11 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
     \end{itemize}
 
 \subsection{Lớp SelectPercentile}
-    Đây là lớp được cung cấp bởi thư viện \textbf{sklearn.feature\_selection}, lớp này khi sử dụng \textbf{phương thức khởi tạo SelectPercentile} thì cần truyền vào \textbf{phương thức tính độ tương quan} giữa các đặc trưng và mục tiêu, và \textbf{phần trăm} các đặc trưng muốn chọn. Giá trị \textbf{trả về} của phương thức là mảng chứa các đặc trưng có độ tương quan cao nhất với mục tiêu.
-
+    Đây là lớp được cung cấp bởi thư viện \textbf{sklearn.feature\_selection}, hỗ trợ trong việc chọn ra nhóm các đặc trưng có độ tương quan cao nhất với mục tiêu, trong đó:
+    \begin{itemize}
+        \item \textbf{SelectPercentile(score\_function, percentile)}: phương thức khởi tạo lớp, \textbf{tham số truyền vào} gồm \textbf{hàm tính toán}, trong đây sẽ là hàm dùng để tính toán giá trị liên quan giữa 2 đặc trưng tùy thuộc vào loại tương quan nào của tham số truyền vào, và \textbf{phần trăm} của các đặc trưng có độ tương quan cao nhất với mục tiêu. Giá trị \textbf{trả về} của phương thức là mảng chứa các đặc trưng có độ tương quan cao nhất với mục tiêu.
+        \item \textbf{fit(X\_train, y\_train)}: phương thức sẽ thực hiện tính toán giá trị liên quan giữa các đặc trưng với mục tiêu dựa trên hàm tính toán được truyền vào và chọn ra các đặc trưng có độ tương quan cao nhất với mục tiêu dựa trên phần trăm được truyền vào. Phương thức sẽ \textbf{không trả về giá trị nào} nhưng sẽ chọn ra các đặc trưng có độ tương quan cao nhất với mục tiêu của bộ dữ liệu đã được truyền vào.
+    \end{itemize}
 \subsection{Hàm mae(y\_pred, y\_test)}\label{sec:mae}
     Đây là hàm được cô \textbf{Phan Thị Phương Uyên} cung cấp, tham số truyền vào sẽ là \textbf{giá trị/tập giá trị dự đoán và giá trị/tập giá trị kiểm tra}. Hàm sẽ \textbf{trả về giá trị thể hiện độ chính xác} của giá trị được dự đoán, giá trị càng thấp thì độ chính xác càng cao. Công thức để tính độ chính xác là:
     \begin{equation}
@@ -478,8 +481,7 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
     Sau khi loại bỏ các đặc trưng này, ta sẽ thu được bộ dữ liệu mới với 22 đặc trưng như sau:
     \textbf{Gender, 10percentage, 12percentage, collegeGPA, CollegeCityTier, English, Logical, Quant, Domain, ComputerProgramming, ElectronicsAndSemicon, ComputerScience, MechanicalEngg, CivilEngg , TelecomEngg, ElectricalEngg, conscientiousness, agreeableness, extraversion, nueroticism, openess\_to\_experience}.        
     
-    \pagebreak
-        \paragraph{Mô hình 2: Loại bỏ các đặc trưng có mức độ tương quan cao (dropping high-correlation feature)}\label{sec:dropping-correlation-feature}
+    \paragraph{Mô hình 2: Loại bỏ các đặc trưng có mức độ tương quan cao (dropping high-correlation feature)}\label{sec:dropping-correlation-feature}
     Hệ số tương quan (\textbf{Correlation coefficient}) là giá trị thể hiện mức độ liên kết giữa 2 đặc trưng. Hệ số tương quan có giá trị nằm trong khoảng [-1, 1], với 1 là tương quan hoàn toàn, -1 là tương quan hoàn toàn nghịch đảo và 0 là không có tương quan. Vậy câu hỏi được đặt ra là: \textbf{Vì sao hệ số tương quan lại ảnh hưởng tới quá trình huấn luyện dữ liệu?}\\ 
     
     Đối với các mô hình hồi quy tuyến tính, một trong những giả định là các đặc trưng là độc lập tuyến tính với nhau. Nếu có sự tương quan giữa các đặc trưng, thì mô hình sẽ không thể xác định được đặc trưng nào là quan trọng hơn đặc trưng nào. Điều này sẽ làm cho mô hình không thể xác định được đặc trưng nào là quan trọng hơn đặc trưng nào, và dẫn tới việc mô hình sẽ không thể dự đoán được mục tiêu. Hiện tượng có các đặc trưng phụ thuộc vào nhau như vậy thì được gọi là hiện tượng \textbf{đa cộng tuyến (\href{https://en.wikipedia.org/wiki/Multicollinearity}{Multicollinearity})}.\\
@@ -519,41 +521,117 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
         \caption{Biểu đồ heatmap thể hiện mức độ tương quan của các đặc trưng}
     \end{figure}
 
-    Theo nội dung của biểu đồ, ta có thể  giá trị hệ số  cao nhất là 0.64 giữa 2 đặc trưng \textbf{10percentage và 12percentage}, ta có thể đánh giá tổng quan rằng các đặc trưng có mức độ tương quan không quá cao, tuy nhiên ta vẫn sẽ tiến hành loại bỏ 1 trong 2 đặc trưng có \textbf{giá trị (không quan tâm tới dấu của giá trị)} hệ số tương quan lớn hớn hoặc bằng 0.6.\\
+    Theo nội dung của biểu đồ, ta có thể  giá trị hệ số  cao nhất là 0.64 giữa 2 đặc trưng \textbf{10percentage và 12percentage}, ta có thể đánh giá tổng quan rằng các đặc trưng có mức độ tương quan không quá cao, tuy nhiên ta vẫn sẽ tiến hành loại bỏ 1 trong 2 đặc trưng có \textbf{giá trị (không quan tâm tới dấu của giá trị)} hệ số tương quan lớn hớn hoặc bằng 0.5.\\
     
     Sau khi loại bỏ các đặc trưng này, ta sẽ thu được bộ dữ liệu mới với 21 đặc trưng để tạo mô hình 2 như sau: \textbf{Gender, 10percentage, CollegeTier, Degree, collegeGPA, CollegeCityTier, English, Logical, Quant, Domain,
     ComputerProgramming, ElectronicsAndSemicon, ComputerScience, MechanicalEngg, CivilEngg, ElectricalEngg, TelecomEngg, conscientiousness, agreeableness, extraversion, nueroticism}.
 
     \paragraph{Mô hình 3: Chọn ra các đặc trưng có mức độ liên quan cao với đặc trưng mục tiêu (selecting high-MI feature)}\label{sec:selecting-MI-feature}
-    \newpage
+    Trong các bỗ dữ liệu thì giữa từng đặc trưng và đặc trưng mục tiêu sẽ có mức độ liên quan với nhau. Mức độ liên quan này sẽ được đo bằng \textbf{hệ số tương quan} như đã được trình bày ở trên, và cũng tương tự vậy, giữa các đặc trưng trong bỗ dữ liệu luôn sẽ có mối liên kết với đặc trưng mục tiêu, và mức độ của sự liên quan này chính là giá trị của \textbf{mutual information}.\\
+
+    \textbf{Mutual information} là một đo lường cho mức độ liên kết giữa 2 biến ngẫu nhiên. Giá trị của \textbf{mutual information} nằm trong khoảng [0, 1], với 0 là không có liên kết và 1 là liên kết hoàn toàn. Để đề cập tới cách thức tính giá trị \textbf{mutual information} thì ta sẽ cần đến khái niệm \textbf{entropy}.\\
+
+    \textbf{Entropy} là một đo lường cho mức độ bất định của một biến ngẫu nhiên, và công thức để tính entropy của 1 biến ngẫu nhiên \textbf{X} là:
+    \begin{equation}
+        H(X) = -\sum_{x\in X}p(x_i)log_2p(x_i)
+    \end{equation}
+    với $p(x_i)$ là xác suất của biến ngẫu nhiên \textbf{X} có giá trị $x_i$. Thông qua entropy, các khái niệm để đo lường thông tin tương hỗ (lượng thông tin chung của 2 biến ngẫu nhiên) ra đời, và một trong số đó là \textbf{entropy có điều kiện} liên quan tới giá trị \textbf{mutual information}.\\
+    
+    \textbf{Conditional entropy} là một đo lường cho mức độ bất định của một biến ngẫu nhiên \textbf{X} khi biết giá trị của một biến ngẫu nhiên \textbf{Y}. Bản chất của giá trị \textbf{mutual information} chính là tính toán sự khác biệt giữa \textbf{entropy} của biến ngẫu nhiên \textbf{X} và \textbf{conditional entropy} của biến ngẫu nhiên \textbf{X} khi biết giá trị của biến ngẫu nhiên \textbf{Y}. Công thức để tính giá trị \textbf{mutual information} là:
+    \begin{equation}
+        I(X;Y) = H(X) - H(X|Y)
+    \end{equation}
+
+    Như vậy, bước đầu của việc thiết lập mô hình này chính là tách dữ liệu của các đặc trưng và đặc trưng mục tiêu ("Salary"). Đồng thời cũng sẽ tạo ra 1 biến với kiểu dữ liệu là lớp \textbf{SelectPercentile} với hàm tính toán truyền vào sẽ là tính \textbf{mutual\_info\_regression}. Sau đó, sử dụng hàm \textbf{fit} để tính toán giá trị \textbf{mutual information} theo hàm tính toán được truyền vào. Trong các lần lấy thông tin và sắp xếp lại giá trị liên quan giữa các đặc trưng với đặc trưng mục tiêu là như biểu đồ cột dưới đây:
+    \begin{figure}[H]
+        \includegraphics[width=\textwidth, keepaspectratio]{assets/bar_chart.png}
+        \centering
+        \caption{Biểu đồ thể hiện giá trị mutual information của các đặc trưng theo thứ tự giảm dần}
+    \end{figure}
+    
+    Sau quá trình thử  chọn ra bao nhiêu phần trăm đặc trưng thì em đã quyết định chọn ra 70\% đặc trưng có giá trị \textbf{mutual information} cao nhất để tạo mô hình. Sau khi chọn ra các đặc trưng này, ta sẽ thu được bộ dữ liệu mới với 16 đặc trưng để tạo mô hình 3 như sau: \textbf{Gender, 10percentage, 12percentage, CollegeTier, collegeGPA, English, Logical, Quant, Domain, ComputerProgramming, ComputerScience, conscientiousness, agreeableness, extraversion, nueroticism, openess\_to\_experience}.
+
+    \subsubsection{Lựa chọn mô hình tốt nhất}
+    Sau khi đã hình thành được 3 mô hình thì sẽ tiến hành lựa chọn mô hình tốt nhất dựa trên phương pháp \hyperref[sec:k-fold-cross-validation]{\textbf{k-fold Cross Validation}}.Với mỗi mô hình cũng sẽ thực hiện bằng cách chia các dòng dữ liệu thành các phần bằng nhau, và chọn tập huấn luyện và kiểm tra với tất cả đặc trưng của mô hình đó. Sau khi thực hiện tính giá trị \textbf{mae} thì sẽ lấy \textbf{mae trung bình} đại diện cho tính hiệu quả của mô hình đó. Kết quả cho 3 mô hình từ \textbf{k-fold Cross Validation} là: \\
+    % Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[h]
+    \centering
+    \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \multicolumn{1}{|l|}{STT} & Mô hình                                                                           & MAE             \\ \hline
+    1                         & Sử dụng 22 đặc trưng (Tất cả ngoại trừ  CollegeTier, Degree)                      & 112176.27596763 \\ \hline
+    2                         & Sử dụng 21 đặc trưng (Tất cả ngoại trừ 12\%, Quant, openess\_to\_exp)             & 111849.95116329 \\ \hline
+    3                         & Sử dụng 17 đặc trưng (ngoại trừ từ MechanicalEngg đến hết trong bảng biểu đồ cột) & 110724.24861457 \\ \hline
+    \end{tabular}%
+    }
+    \end{table}\\
+    Và theo như kết quả của bảng, \textbf{mô hình có mae nhỏ nhất chính là mô hình 3} với 16 đặc trưng được chọn ra.\\
+
+    \subsubsection{Kết quả tương ứng cho mô hình tốt nhất}
+    Sau khi có được mô hình tốt nhất thì sẽ tiến hành huấn luyện và kiểm tra trên mô hình tốt nhất, và công thức hồi quy tuyến tính của mô hình tốt nhất là:
+    \begin{itemize}
+        \item 
+        \begin{flalign}
+            & \text{Salary} = (-23438.408) \times \text{Gender} + (887.524) \times \text{10percentage} && \\
+            \nonumber 
+            & \quad + (971.041) \times \text{12percentage} + (-79706.706) \times \text{CollegeTier} && \\
+            \nonumber 
+            & \quad + (1689.069) \times \text{collegeGPA} + (148.766) \times \text{English} && \\
+            \nonumber 
+            & \quad + (132.912) \times \text{Logical} + (95.513) \times \text{Quant} && \\
+            \nonumber 
+            & \quad + (22104.286) \times \text{Domain} + (104.259) \times \text{ComputerProgramming} && \\
+            \nonumber 
+            & \quad + (-164.058) \times \text{ComputerScience} + (-20216.903) \times \text{conscientiousness} && \\
+            \nonumber 
+            & \quad + (16789.581) \times \text{agreeableness} + (5018.386) \times \text{extraversion} && \\
+            \nonumber 
+            & \quad + (-9649.493) \times \text{nueroticism} + (-6317.617) \times \text{openess\_to\_experience} &&
+        \end{flalign}
+    
+        \item Kết quả \textbf{mae} là: 102431.57002986001
+    \end{itemize}
+    \subsubsection{Nhận xét các mô hình}
+    \begin{itemize}
+        \item Cả 3 mô hình được xây dựng đã có thể đem lại dự đoán tốt hơn so với \textbf{3 yêu cầu} trước vì đã có việc chọn lọc các đặc trưng theo chủ đích, tuy nhiên, mô hình 3 vẫn có thể đem lại kết quả tốt hơn so với 2 mô hình còn lại.
+        \item Mô hình 1 đã loại bỏ được 1 số đặc trưng có phương sai thấp, tuy nhiên, mô hình này vẫn còn đặc trưng có phương sai thấp, và đặc trưng có phương sai thấp này vẫn có thể ảnh hưởng tới mô hình.
+        \item Mô hình 2 đã loại bỏ một số đặc trưng có hệ số tương quan cao, tuy nhiên nhìn tổng thể trong mô hình này, các đặc trưng có hệ số tương quan khá là thấp (cao nhất là 0.64) thì khi loại bỏ đi cũng chưa làm thay đổi quá nhiều về sự hiệu quả của mô hình.
+        \item Đối với mô hình 3, dữ liệu cho thấy có khá nhiều đặc trưng không có giá trị tương hỗ với đặc trưng mục tiêu, vì vậy ta có thể bỏ đi được khá nhiều đặc trưng thừa hay làm cho mô hình huấn luyện không tốt. Từ đó độ chính xác của mô hình này mang lại rõ ràng sẽ khá hiệu quả hơn là 2 mô hình trước đó.
+    \end{itemize}
 \section{TÀI LIỆU THAM KHẢO}
 \begin{itemize}
     \item Cô Phan Thị Phương Uyên.
     \item 
-    \href{https://ie.nitk.ac.in/blog/2020/01/19/algorithms-for-adjusting-brightness-and-contrast-of-an-image/}{Công thức thay đổi độ sáng và độ tương phản}.
+    \href{https://en.wikipedia.org/wiki/Linear_regression}{Khái niệm hồi quy tuyến tính}.
 
     \item
-    \href{https://www.dfstudios.co.uk/articles/programming/image-programming-algorithms/image-processing-algorithms-part-5-contrast-adjustment/}{Thay đổi độ tương phản}.
+    \href{https://neptune.ai/blog/cross-validation-in-machine-learning-how-to-do-it-right}{K-fold Cross Validation}.
 
     \item 
-    \href{https://www.baeldung.com/cs/convert-rgb-to-grayscale}{Công thức chuyển thành hình xám}.
+    \href{https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.VarianceThreshold.html}{Lớp VarianceThreshold}.
 
     \item 
-    \href{https://dyclassroom.com/image-processing-project/how-to-convert-a-color-image-into-sepia-image}{Công thức chuyển thànhh hình màu sepia}.
+    \href{https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.mutual_info_regression.html}{Lớp mutual\_info\_regression}.
 
-    \item \href{https://en.wikipedia.org/wiki/Kernel_(image_processing)}{Công thức và ma trận các kernel để làm mờ và rõ nét ảnh}.
+    \item \href{https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectPercentile.html}{Lớp SelectPercentile}.
 
     \item 
-    \href{https://www.youtube.com/watch?v=4Eh0y3LHTNU&t=658s}{Triển khai thuật toán cho làm mờ ảnh}.
-    \item \href{https://www.maa.org/external_archive/joma/Volume8/Kalman/General.html}{Phương trình ellip}.
+    \href{https://numpy.org/doc/stable/reference/generated/numpy.array_split.html#numpy.array_split}{Hàm numpy.array\_split}.
 
-    \item \href{https://math.stackexchange.com/questions/2003517/how-to-calculate-width-and-height-of-a-45-rotated-ellipse-bounded-by-a-square}{Công thức của ellip khi xoay 45 độ}.
+    \item \href{https://kse.ua/kse-research/relationship-between-your-personality-and-your-salary-level/ }{Bài nghiên cứu về ảnh hưởng của 5 đặc trưng cảm xúc tới mức độ lương (truy cập: 11/8/2023)}.
 
-    \item \href{https://numpy.org/doc/stable/user/index.html#user}{Tài liệu các hàm trong thư viện numpy}.
+    \item \href{https://www.journals.uchicago.edu/doi/abs/10.1086/298239}{Bài tìm hiều về khoảng cách lương giữa cá nhân và kĩ năng toán học (Truy cập: 20/8/2023)}.
 
-    \item \href{https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.imshow.html}{Thư viện matplotlib hỗ trợ xuất ảnh và lưu ảnh}.
-
-    \item \href{https://pillow.readthedocs.io/en/stable/reference/Image.html}{Thư viện Pillow hỗ trợ đọc ảnh}.
+    \item \href{https://sease.io/2021/06/drop-constant-features-a-real-world-ltr-scenario.html#:~:text=Those%20features%20which%20contain%20constant,example%20during%20the%20encoding%20phase}{Lý do phải loại bỏ các constant feature}.
+    \item \href{https://datascience.stackexchange.com/questions/24452/in-supervised-learning-why-is-it-bad-to-have-correlated-features}{Vì sao có các đặc trưng tương quan cao thì lại không tốt trong mô hình huấn luyện}.
+    \item \href{https://www.quora.com/Why-is-it-important-to-remove-correlated-variables-when-performing-machine-learning-If-2-variables-are-correlated-how-do-you-choose-which-one-to-exclude-from-the-data-set}{Lý do vì sao có các đặc trưng có tương quan cao thì lại không tốt theo góc nhìn toán học}.
+    \item \href{https://phamdinhkhanh.github.io/deepai-book/ch_donation/information_theory.html}{Lý thuyết và công thức tính toán của mutual information}.
+    
+    \item \href{https://www.youtube.com/watch?v=uMlU2JaiOd8}{Cài đặt loại bỏ các constant feature}.
+    \item \href{https://www.youtube.com/watch?v=FndwYNcVe0U&t=4s}{Loại bỏ các đặc trưng có tương quan cao}.
+    \item \href{https://www.youtube.com/watch?v=i-MF3CXWWEM&list=PLZoTAELRMXVPgjwJ8VyRoqmfNs2CJwhVH&index=4}{Chọn nhóm các đặc trưng nằm trong top đầu có mức độ tương hỗ cao với đặc trưng mục tiêu}.
     
 \end{itemize}
 % ========== END [MAIN CONTENT] ==========
