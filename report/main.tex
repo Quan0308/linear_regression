@@ -180,13 +180,18 @@
 \end{itemize}
 
 \section{CÁC THƯ VIỆN SỬ DỤNG THÊM} \label{sec:library}
-Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} và \textbf{pandas}, sinh viên còn sử dụng thêm thư viện \textbf{sklearn} và sử dụng module \textbf{feature\_selection} của thư viện này. Trong module này sẽ sử dụng 3 lớp:
+Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} và \textbf{pandas}, sinh viên còn sử dụng thêm thư viện sau:
 \begin{itemize}
-    \item \textbf{VarianceThreshold}: Loại bỏ các đặc trưng có \textbf{phương sai} nhỏ hơn ngưỡng được đặt trước.
-    \item \textbf{mutual\_info\_regression}: Tính độ tương quan giữa các đặc trưng và giá trị mục tiêu.
-    \item \textbf{SelectPercentile}: Chọn ra nhóm các đặc trưng có độ tương quan cao nhất với giá trị mục tiêu.
+    \item \textbf{sklearn} và sử dụng module \textbf{feature\_selection} của thư viện này. Trong module này sẽ sử dụng 3 lớp:
+        \begin{itemize}
+            \item \textbf{VarianceThreshold}: Loại bỏ các đặc trưng có \textbf{phương sai} nhỏ hơn ngưỡng được đặt trước.
+            \item \textbf{mutual\_info\_regression}: Tính độ tương quan giữa các đặc trưng và giá trị mục tiêu.
+            \item \textbf{SelectPercentile}: Chọn ra nhóm các đặc trưng có độ tương quan cao nhất với giá trị mục tiêu.
+        \end{itemize}
+    
+    \item \textbf{matplotlib}: Thư viện hỗ trợ trực quan thông tin biểu đồ.
+    \item \textbf{seaborn}: Thư viện hỗ trợ xây dựng biểu đồ \textbf{heatmap}.
 \end{itemize}
-
 \section{KIẾN THỨC TÌM HIỂU}
 \subsection{Hồi quy tuyến tính}
     \begin{itemize}
@@ -625,8 +630,8 @@ Ngoài việc sử dụng 2 thư viện được cung cấp là \textbf{Numpy} v
     \item \href{https://www.journals.uchicago.edu/doi/abs/10.1086/298239}{Bài tìm hiều về khoảng cách lương giữa cá nhân và kĩ năng toán học (Truy cập: 20/8/2023)}.
 
     \item \href{https://sease.io/2021/06/drop-constant-features-a-real-world-ltr-scenario.html#:~:text=Those%20features%20which%20contain%20constant,example%20during%20the%20encoding%20phase}{Lý do phải loại bỏ các constant feature}.
-    \item \href{https://datascience.stackexchange.com/questions/24452/in-supervised-learning-why-is-it-bad-to-have-correlated-features}{Vì sao có các đặc trưng tương quan cao thì lại không tốt trong mô hình huấn luyện}.
-    \item \href{https://www.quora.com/Why-is-it-important-to-remove-correlated-variables-when-performing-machine-learning-If-2-variables-are-correlated-how-do-you-choose-which-one-to-exclude-from-the-data-set}{Lý do vì sao có các đặc trưng có tương quan cao thì lại không tốt theo góc nhìn toán học}.
+    \item \href{https://datascience.stackexchange.com/questions/24452/in-supervised-learning-why-is-it-bad-to-have-correlated-features}{Vì sao có các đặc trưng tương quan cao thì lại không tốt trong mô hình huấn luyện?}
+    \item \href{https://www.quora.com/Why-is-it-important-to-remove-correlated-variables-when-performing-machine-learning-If-2-variables-are-correlated-how-do-you-choose-which-one-to-exclude-from-the-data-set}{Lý do vì sao có các đặc trưng có tương quan cao thì lại không tốt theo góc nhìn toán học?}
     \item \href{https://phamdinhkhanh.github.io/deepai-book/ch_donation/information_theory.html}{Lý thuyết và công thức tính toán của mutual information}.
     
     \item \href{https://www.youtube.com/watch?v=uMlU2JaiOd8}{Cài đặt loại bỏ các constant feature}.
